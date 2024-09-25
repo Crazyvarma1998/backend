@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
-const port = 3000
+// const port = 3000
+require('dotenv').config(); // Load environment variables
+
+const port = process.env.PORT || 3000;
+
 const mongoose=require('mongoose');
 const userRouter = require('./routes/userroutes');
 var cors = require("cors");
@@ -11,11 +15,13 @@ app.get('/', (req, res) => {
 })
 app.use(userRouter);
 async function connectDb() {
-   await mongoose.connect("mongodb://localhost:27017",{
-        dbName:"UserDb"
-    })
+  await mongoose.connect(process.env.MONGODB_URI, {
+    dbName: "UserDb" 
+})
 }
 connectDb().catch((err)=>console.error(err))
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+
